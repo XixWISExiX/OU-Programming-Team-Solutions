@@ -51,12 +51,14 @@ public:
 };
 
 Trie trie;
+set<string> dictionary;
 
-void searchNeighbors(vector<vector<char>> grid, unsigned short int r, unsigned short int c, string word){
+void searchNeighbors(vector<vector<char>> &grid, unsigned short int r, unsigned short int c, string word){
     // Longest combination possible is 10
     if(word.length() > 10) return;
     // Put current combination in the trie
     trie.insert(word);
+    dictionary.insert(word);
     // left
     if(c-1 > -1 && grid[r][c-1] != '#'){
         char temp = grid[r][c-1];
@@ -133,7 +135,8 @@ int main() {
     int counter = 0;
     for(unsigned int i = 0; i < n; i++){
         cin >> word;
-        if(trie.search(word)) counter++;
+        // if(trie.search(word)) counter++;
+        if(dictionary.find(word) != dictionary.end()) counter++;
     }
     cout<<counter<<endl;
     return 0;
