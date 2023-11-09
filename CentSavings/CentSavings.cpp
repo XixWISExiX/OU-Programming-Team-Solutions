@@ -26,7 +26,7 @@ int customRound(int num) {
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    freopen("input.txt", "r", stdin);
+    // freopen("input.txt", "r", stdin);
 
     int n, d, temp;
     cin >> n >> d;
@@ -42,48 +42,42 @@ int main() {
     int N = n+1;
     int D = d+1;
     int dp[D][N][N];
-    // for(int i = 0; i < N; i++){
-    //     for(int j = i; j < N; j++){
-    //         if(i==j) dp[0][i][j] = cents[i];
-    //         // else dp[0][i][j] = dp[0][i][j-1] + dp[0][i+1][j];
-    //     }
-    // }
+
     for(int i = 0; i < N; i++){
+        // dp[0][i][i] = customRound(cents[i]);
         dp[0][i][i] = cents[i];
     }
 
     for(int i = 1; i < N; i++){
         for(int j = 0; j+i < N; j++){
-            dp[0][j][j+i] = dp[0][j][j+1-1] + dp[0][j+1][j+i];
-            // if(i!=j){
-            //     cout<<dp[0][j][j+i-1]<<endl;
-            //     cout<<dp[0][j+1][j+i]<<endl;
-            // }
+            // dp[0][j][j+i] = customRound(dp[0][j][j] + dp[0][j+1][j+i]);
+            dp[0][j][j+i] = dp[0][j][j] + dp[0][j+1][j+i];
         }
     }
 
+//Tester
     for(int i = 0; i < N; i++){
-        cout<<endl;
+        // cout<<endl;
         for(int j = i; j < N; j++){
-            cout<<dp[0][i][j]<<" ";
+            dp[0][i][j] = customRound(dp[0][i][j]);
+            // cout<<dp[0][i][j]<<" ";
         }
     }
 
     for(int k = 1; k < D; k++){
         for(int i = 1; i < N; i++){
             for(int j = 0; j+i < N; j++){
-                dp[k][j][j+i] = 0;
-                // dp[k][j][j+i] = 20000000;
-                // dp[k][j][j+i] = cents[j];
+                // dp[k][j][j+i] = 0;
+                dp[k][j][j+i] = 20000000;
+                // dp[k][j][j+i] = dp[0][j][j+i];
                 for(int x = j+1; x <= j+i; x++){
-                // for(int x = 1; x < D; x++){
                     // dp[k][j][j+i] = min(customRound(dp[k][j][j+i]), customRound(dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], max(customRound(dp[k-1][j][x-1]), dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], max(customRound(dp[k-1][j][x-1]), dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], cents[j] + max(customRound(dp[k-1][j][x-1]), dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(customRound(dp[k][j][j+i]) + max(dp[k-1][j][x-1], dp[k][x][j+i]), dp[k][j][j+i] + max(dp[k-1][j][x-1], dp[k][x][j+i]));
-                    dp[k][j][j+i] = min(customRound(dp[k-1][j][j+i]), dp[k-1][j][j+i]);
-                    // dp[k][j][j+i] = min(dp[k][j][j+i], cents[j] + max(dp[k-1][j][x-1], dp[k][x][j+i]));
+                    // dp[k][j][j+i] = min(customRound(dp[k-1][j][j+i]), dp[k-1][j][j+i]);
+                    dp[k][j][j+i] = min(dp[k][j][j+i], customRound(dp[0][j][x-1] + dp[0][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], max(customRound(dp[k-1][j][x-1])+dp[k][x][j+i], dp[k-1][j][x-1]+dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], max(customRound(dp[k-1][j][x-1])+dp[k][x][j+i], dp[k-1][j][x-1]+dp[k][x][j+i]));
                     // dp[k][j][j+i] = min(dp[k][j][j+i], min(customRound(dp[k-1][j][x-1]), customRound(dp[k][x][j+i])));
@@ -94,17 +88,17 @@ int main() {
         }
     }
 
-    for(int i = 0; i < N; i++){
-        cout<<endl;
-        for(int j = i; j < N; j++){
-            cout<<dp[1][i][j]<<" ";
-        }
-    }
+//Other tester
+    // for(int i = 0; i < N; i++){
+    //     cout<<endl;
+    //     for(int j = i; j < N; j++){
+    //         cout<<dp[1][i][j]<<" ";
+    //     }
+    // }
 
     // cout<<dp[1][0][5]<<endl;
     // cout<<n<<endl;
-    cout<<endl;
+    // cout<<n<<endl;
     cout<<dp[d][0][n]<<endl;
-
     return 0;
 }
