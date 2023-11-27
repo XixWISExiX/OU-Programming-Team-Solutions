@@ -27,7 +27,7 @@ int main() {
     // Matrix for all added cent values without rounding
     int dps[N][N];
 
-    // Add all the cents to the bottm layer of the matrix
+    // Add all the cents to the bottem layer of the matrix
     for(int i = 0; i < N; i++){
         dp[0][i][i] = cents[i];
         dps[i][i] = cents[i];
