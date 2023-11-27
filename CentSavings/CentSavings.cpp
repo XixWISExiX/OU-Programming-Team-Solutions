@@ -3,12 +3,6 @@
 
 using namespace std;
 
-// Function which rounds numbers up (5-9) or down (0-4) in the ones place.
-int customRound(int num) {
-    if (num % 10 >= 5) return (num / 10 + 1) * 10;
-    else return (num / 10) * 10;
-}
-
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
@@ -50,7 +44,7 @@ int main() {
     // Round the values in the first matrix in dp
     for(int i = 0; i < N; i++){
         for(int j = i; j < N; j++){
-            dp[0][i][j] = customRound(dp[0][i][j]);
+            dp[0][i][j] = (((dp[0][i][j]) + 5)/10)*10;
         }
     }
 
@@ -69,7 +63,7 @@ int main() {
                 if(dp[k-1][0][x-1] < 0) temp = dp[0][0][x-1];
                 else temp = dp[k-1][0][x-1]; // make the value equal to the most recent left value in the most recent past case.
                 // At a given position find if it's current value is the minimum or the rounded values around rounding, or the new values around rounding.
-                dp[k][0][i] = min(dp[k][0][i], min(customRound(dps[0][x-1] + dps[x][i]), customRound(temp + dp[0][x][i])));
+                dp[k][0][i] = min(dp[k][0][i], min((((dps[0][x-1] + dps[x][i]) + 5)/10)*10, (((temp + dp[0][x][i]) + 5)/10)*10));
             }
         }
     }
