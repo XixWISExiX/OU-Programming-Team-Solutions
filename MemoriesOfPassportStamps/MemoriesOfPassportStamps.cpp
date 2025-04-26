@@ -1,0 +1,60 @@
+#include <iostream>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    freopen("input.txt", "r", stdin);
+	
+	unsigned long long int n, k;
+    cin >> n;
+	cin >> k;
+	vector<pair<unsigned int, unsigned int>> vec;
+	int holder = 0;
+	for(int i = 0; i < n; i++){
+			cin>>holder;
+		    pair<unsigned int, unsigned int> pr(0, holder);
+			vec.push_back(pr);
+	}
+
+	unsigned int p = 0;
+	unsigned int maximum = 0;
+	unsigned int greedy;
+	unsigned int idx;
+	unsigned overall_max;
+	vector<unsigned int> splits(n, 1);
+	// NOTE This algorithm is O((k-n+1)*n)
+	// TODO There could be a solution which is O(log(k-n+1)*n) that uses
+	// binary search to find the correct number of cuts for each number n.
+	// Loop: k-n <= 10^18
+	for(int c = 1; c <= k-n+1; c++){
+			// Loop: n <= 10^5
+			for(int j = 0; j < n; j++){
+				// Find Split
+				greedy = (vec[j].second+splits[j]-1)/splits[j];
+			//	cout<<"Greedy: "<<greedy<<" "<<j<<endl;
+				if(maximum < greedy){
+						maximum = greedy;
+						idx = j;
+				}
+
+				if(vec[j].first == 0){
+						if(overall_max < vec[j].second) overall_max = vec[j].second;
+				}
+				else{
+						if(overall_max < maximum) overall_max = maximum;
+				}
+			}
+			cout<<maximum<<endl;
+			vec[idx].first = maximum;
+			splits[idx]++;
+			maximum = 0;
+			if(c != k-n+1) overall_max = 0;
+	}
+
+	cout<<overall_max<<endl;
+    return 0;
+}
+
